@@ -3,7 +3,7 @@ import styled, { ThemeProvider as StyledThemeProvider, createGlobalStyle } from 
 import {dark, light} from '../assets/theme';
 import { navigate } from '@reach/router'
 import { Button } from './global';
-import { ThemeConsumer } from './ThemeContext'
+import ThemeContext from './ThemeContext'
 import {FaLightbulb, FaArrowLeft} from 'react-icons/fa';
 const Reset = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -99,24 +99,14 @@ const HomeIcon = styled(FaArrowLeft)`
 
 const Layout = (props) => {
     const [location, setLocation] = useState(null);
-    const [theme, setTheme] = useState(light);
+    // const [theme, setTheme] = useState(light);
     const [hovering, setHovering] = useState(false);
-    
+              
     const {
         children,
         className,
         style
     } = props;
-
-
-    const switchTheme = () => {
-        let opposite;
-        theme === light ?
-        opposite = dark
-        :
-        opposite = light;
-        setTheme(opposite);
-    }
 
     const buttonGrow = () => {
         setHovering(true);
@@ -130,35 +120,37 @@ const Layout = (props) => {
         setLocation(current);
         console.log('current --> ', current)
     },[])
-
     return(
-        <StyledThemeProvider theme={theme}  className={className} 
-        style={style}{...props}>
-            <>
-            <Reset/>
-            <Background>
-                <SwitchTheme onClick={switchTheme} onMouseEnter={buttonGrow} onMouseLeave={buttonShrink}>
+    <ThemeContext.Consumer>
+        {({theme, switchTheme}) => (
+            <StyledThemeProvider theme={theme}  className={className} 
+            style={style}{...props}>
+                <>
+                <Reset/>
+                <Background>
+                    <SwitchTheme onClick={()=>switchTheme()} onMouseEnter={buttonGrow} onMouseLeave={buttonShrink}>
+                        {
+                            hovering && theme === light ?
+                            'Dark Theme'
+                            : hovering && theme === dark ?
+                            'Light Theme'
+                            :
+                            <LightBulb/>
+                        }
+                    </SwitchTheme>
                     {
-                        hovering && theme === light ?
-                        'Dark Theme'
-                        : hovering && theme === dark ?
-                        'Light Theme'
+                        location !== '/' ?
+                        <GoHome onClick={()=>{navigate('/')}}><HomeIcon/></GoHome>
                         :
-                        <LightBulb/>
+                        <></>
                     }
-                </SwitchTheme>
-                {
-                    location !== '/' ?
-                    <GoHome onClick={()=>{navigate('/')}}><HomeIcon/></GoHome>
-                    :
-                    <></>
-                }
-                <ContentContainer>
-                    {children}
-                </ContentContainer>
-            </Background>
-            </>
-        </StyledThemeProvider>
-    )
-}
+                    <ContentContainer>
+                        {children}
+                    </ContentContainer>
+                </Background>
+                </>
+            </StyledThemeProvider> 
+        )}
+    </ThemeContext.Consumer>
+)}
 export default Layout;

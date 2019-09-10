@@ -1,9 +1,9 @@
 import React, { useState, createContext } from 'react';
 import {dark, light} from '../assets/theme';
 
-const {Provider, Consumer} = createContext({theme: null, switchTheme: null});
-
+const ThemeContext = createContext({theme: null, switchTheme: null});
 const ThemeProvider = ({children}) => {
+    
     const [theme, setTheme] = useState(light);
     const switchTheme = () => {
         let opposite;
@@ -14,15 +14,13 @@ const ThemeProvider = ({children}) => {
         setTheme(opposite);
     }
     return(
-        <Provider value={{
-            switchTheme: switchTheme,
-            theme: theme
+        <ThemeContext.Provider value={{
+            theme, switchTheme
         }}>
             {children}
-        </Provider>
+        </ThemeContext.Provider>
     )
 }
 
-const ThemeConsumer = Consumer;
-
-export { ThemeProvider, ThemeConsumer }
+export default ThemeContext
+export { ThemeProvider }
