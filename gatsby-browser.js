@@ -1,9 +1,9 @@
 const React = require("react")
-const ThemeContext = require("./src/components/ThemeContext");
+const AppContext = require("./src/components/AppContext");
 exports.wrapRootElement = ({ element }) => {
   return (
-    <ThemeContext.ThemeProvider>
+    <AppContext.ContextProvider>
       {element}
-    </ThemeContext.ThemeProvider>
+    </AppContext.ContextProvider>
   )
 }

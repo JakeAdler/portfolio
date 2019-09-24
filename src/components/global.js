@@ -22,5 +22,9 @@ const Input = styled.input`
         outline: 0;
     }
 `
-
-export { Button, Input }
+const Anchor = styled.a`
+    cursor: pointer;
+    text-decoration: none;
+    color: ${props => props.theme.text.color}
+`
+export { Button, Input, Anchor }

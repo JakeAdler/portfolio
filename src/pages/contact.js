@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import styled from 'styled-components';
 import BaseLayout from '../components/Layout';
 import { Button, Input as BaseInput } from '../components/global';
-
+import 'animate.css'
 
 const Layout = styled(BaseLayout)`
     text-align: center;
@@ -27,6 +27,8 @@ const FormRow = styled.div`
 `
 const Input = styled(BaseInput)`
     margin-top: 5px;
+    background-color: transparent;
+    color: ${props => props.theme.text.color ? props.theme.text.color : '#000'};
 `
 const Submit = styled(Button)`
     margin: 20px auto;
@@ -37,7 +39,17 @@ const ContactPage = () => {
     const [message, setMessage] = useState('');
     return(
         <Layout>
-            <Title>Drop a line.</Title>
+            <div style={{display: 'flex', justifyContent:'center'}}>
+            <Title className='animated bounceInDown' style={{paddingRight: '8px'}}>
+                Drop 
+            </Title>
+            <Title>
+                a line
+            </Title>
+            <Title className='animated bounceInRight delay-1s'>
+                .
+            </Title>
+            </div> 
             <Form> 
                 <FormRow>
                     <label>Name </label>
@@ -50,8 +62,9 @@ const ContactPage = () => {
                     onChange={(e)=>setEmail(e.target.value)}/>
                 </FormRow>
                 <FormRow>
-                    <label for='message'>Message </label>
+                    <label>Message </label>
                     <Input as='textarea' id='message' rows='6' value={message}
+                    style={{minWidth: '200px', height: 'auto'}}
                     onChange={(e)=>setMessage(e.target.value)}/>
                 </FormRow>
                 <Submit>Submit</Submit>
